@@ -3,8 +3,8 @@ body {
     margin: 0;
     padding: 0;
     background: linear-gradient(to bottom, #f9f9f9, #e3e3e3);
-    text-align: center;
-    color: #333;
+    text-align: left;
+    line-height: 1.6;
 }
 
 /* Navigation Styles */
@@ -19,20 +19,20 @@ nav ul {
 }
 
 nav ul li {
-    float: left;
+    margin: 0;
 }
 
 nav ul li a {
     display: block;
     color: white;
-    text-align: center;
-    padding: 14px 20px;
     text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
     transition: all 0.3s ease;
 }
 
 nav ul li a:hover {
-    background-color: #111;
+    background-color: #666;
 }
 
 form {
