@@ -4,6 +4,7 @@ body {
     padding: 0;
     background-color: #000000;
     text-align: center;
+    color: white;
 }
 
 /* Navigation Styles */
@@ -34,7 +35,7 @@ form {
     max-width: 400px;
     margin: 50px auto;
     padding: 20px;
-    background-color: green;
+    background-color: #ffa9a9;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
