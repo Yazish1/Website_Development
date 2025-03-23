@@ -11,12 +11,13 @@ h1 {
     font-size: 2.5em; 
     margin: 20px auto;
 }
-.centered-block {
-    display: block; /* Ensures the element behaves as a block-level element */
-    margin: 20px auto; /* Centers horizontally with vertical spacing */
-    text-align: center; /* Aligns any inline content, if applicable */
-    max-width: 80%; /* Makes sure the content doesn't exceed 80% of the page */
+img, iframe {
+    margin: 0;
+    padding: 0;
+    display: block; /* Forces block behavior for consistent alignment */
+    max-width: 100%; /* Ensures responsiveness */
 }
+
 
 p {
     width: 80%;
