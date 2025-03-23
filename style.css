@@ -10,13 +10,13 @@ h1 {
     text-align: center; 
     font-size: 2.5em; 
     margin: 20px auto;
+.centered-block {
+    display: flex; /* Applies Flexbox for centering */
+    justify-content: center; /* Centers content horizontally */
+    align-items: center; /* Centers content vertically */
+    margin: 20px auto; /* Adds spacing around the content */
 }
-img, iframe {
-    margin: 0;
-    padding: 0;
-    display: block; /* Forces block behavior for consistent alignment */
-    max-width: 100%; /* Ensures responsiveness */
-}
+
 
 
 p {
