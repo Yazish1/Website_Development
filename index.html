@@ -162,25 +162,120 @@
       Sign up for the weekly newsletter to stay upto date with events happening at the residence.
       All you need is your email!
       <br>
-      <form action="process_forms.php" method = "GET">
-        <label for = "email"> Email:</label>
-        <input type = "email" id = "email" name="email" placeholder= "xyz@gmail.com"><br>
-        <input type = "reset"><br>
-        <input type = "submit">
+      <form id="newsletterForm" onsubmit="handleNewsletterSubmit(event)">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" placeholder="xyz@gmail.com" required><br>
+        <input type="reset"><br>
+        <input type="submit">
       </form>
       
         
       <h3>Get immediate access to your portal</h3>
         Put your room number and password (at the back of your access card) in order to get access to your portal.
         The portal will help you register for building events and pay your rent.<br>
-        <form action="process_forms.php" method = "POST">
-        <label for = "roomnumber"> Room number: </label>
-        <input type = "text" id = "roomnumber" name="roomnumber" placeholder= "000"><br>
-        <label for = "password"> Password: </label>
-        <input type = "password" id = "password" name="password"><br>
-        <input type = "reset"><br>
-        <input type = "submit">
+        <form id="portalForm" onsubmit="handlePortalSubmit(event)">
+        <label for="roomnumber">Room number:</label>
+        <input type="text" id="roomnumber" name="roomnumber" placeholder="000" required><br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br>
+        <input type="reset"><br>
+        <input type="submit">
         </form>
+
+      <h3>View Subscribers and Portal Requests</h3>
+      <button onclick="fetchData()">View All Submissions</button>
+      <div id="submissionsDisplay"></div>
     
+    <script>
+      async function handleNewsletterSubmit(event) {
+        event.preventDefault();
+        const form = event.target;
+        const formData = new FormData(form);
+        
+        try {
+          const response = await fetch('/api/submit', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              type: 'newsletter',
+              email: formData.get('email')
+            })
+          });
+          
+          if (response.ok) {
+            alert('Thank you for subscribing to our newsletter!');
+            form.reset();
+          } else {
+            alert('There was an error submitting the form. Please try again.');
+          }
+        } catch (error) {
+          alert('There was an error submitting the form. Please try again.');
+        }
+      }
+
+      async function handlePortalSubmit(event) {
+        event.preventDefault();
+        const form = event.target;
+        const formData = new FormData(form);
+        
+        try {
+          const response = await fetch('/api/submit', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              type: 'portal',
+              roomNumber: formData.get('roomnumber'),
+              password: formData.get('password')
+            })
+          });
+          
+          if (response.ok) {
+            alert('Portal access request submitted successfully!');
+            form.reset();
+          } else {
+            alert('There was an error submitting the form. Please try again.');
+          }
+        } catch (error) {
+          alert('There was an error submitting the form. Please try again.');
+        }
+      }
+
+      async function fetchData() {
+        try {
+          const response = await fetch('/api/submit');
+          const data = await response.json();
+          
+          let displayHTML = '<h4>Newsletter Subscribers:</h4>';
+          if (data.subscribers && data.subscribers.length > 0) {
+            displayHTML += '<ul>';
+            data.subscribers.forEach(sub => {
+              displayHTML += `<li>${sub.email} (subscribed: ${new Date(sub.subscribedAt).toLocaleString()})</li>`;
+            });
+            displayHTML += '</ul>';
+          } else {
+            displayHTML += '<p>No subscribers yet</p>';
+          }
+
+          displayHTML += '<h4>Portal Access Requests:</h4>';
+          if (data.portalRequests && data.portalRequests.length > 0) {
+            displayHTML += '<ul>';
+            data.portalRequests.forEach(req => {
+              displayHTML += `<li>Room ${req.roomNumber} (requested: ${new Date(req.requestedAt).toLocaleString()})</li>`;
+            });
+            displayHTML += '</ul>';
+          } else {
+            displayHTML += '<p>No portal requests yet</p>';
+          }
+
+          document.getElementById('submissionsDisplay').innerHTML = displayHTML;
+        } catch (error) {
+          document.getElementById('submissionsDisplay').innerHTML = '<p>Error fetching data</p>';
+        }
+      }
+    </script>
   </body>
 </html>

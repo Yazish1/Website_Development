@@ -1,8 +1,11 @@
 {
-  "regions": ["syd1"],
-  "cleanUrls": true,
-  "crons": [
-    {"path": "/api/every-day", "schedule": "0 21 * * *" }
+  "version": 2,
+  "routes": [
+    {
+      "src": "/api/submit",
+      "methods": ["POST"],
+      "dest": "/api/submit.js"
+    }
   ]
 }
 
