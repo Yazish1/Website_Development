@@ -162,9 +162,9 @@
       Sign up for the weekly newsletter to stay upto date with events happening at the residence.
       All you need is your email!
       <br>
-      <form action="index.php" method = "GET">
+      <form action="process_forms.php" method = "GET">
         <label for = "email"> Email:</label>
-        <input type = "email" id = "email" placeholder= "xyz@gmail.com"><br>
+        <input type = "email" id = "email" name="email" placeholder= "xyz@gmail.com"><br>
         <input type = "reset"><br>
         <input type = "submit">
       </form>
@@ -173,11 +173,11 @@
       <h3>Get immediate access to your portal</h3>
         Put your room number and password (at the back of your access card) in order to get access to your portal.
         The portal will help you register for building events and pay your rent.<br>
-        <form action="index.php" method = "POST">
+        <form action="process_forms.php" method = "POST">
         <label for = "roomnumber"> Room number: </label>
-        <input type = "text" id = "roomnumber" placeholder= "000"><br>
+        <input type = "text" id = "roomnumber" name="roomnumber" placeholder= "000"><br>
         <label for = "password"> Password: </label>
-        <input type = "text" id = "password"><br>
+        <input type = "password" id = "password" name="password"><br>
         <input type = "reset"><br>
         <input type = "submit">
         </form>
