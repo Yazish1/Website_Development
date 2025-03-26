@@ -183,10 +183,30 @@
         </form>
 
       <h3>View Subscribers and Portal Requests</h3>
-      <button onclick="fetchData()">View All Submissions</button>
-      <div id="submissionsDisplay"></div>
+      <button onclick="toggleSubmissions()">View All Submissions</button>
+      <div id="submissionsDisplay" style="display: none;"></div>
     
     <script>
+      let submissionsInterval;
+
+      function toggleSubmissions() {
+        const display = document.getElementById('submissionsDisplay');
+        const button = document.querySelector('button');
+        
+        if (display.style.display === 'none') {
+          display.style.display = 'block';
+          button.textContent = 'Hide Submissions';
+          // Start real-time updates
+          fetchData(); // Initial fetch
+          submissionsInterval = setInterval(fetchData, 5000); // Update every 5 seconds
+        } else {
+          display.style.display = 'none';
+          button.textContent = 'View All Submissions';
+          // Stop real-time updates
+          clearInterval(submissionsInterval);
+        }
+      }
+
       async function handleNewsletterSubmit(event) {
         event.preventDefault();
         const form = event.target;
