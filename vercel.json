@@ -1,5 +1,48 @@
 {
   "version": 2,
+  "regions": ["syd1"],
+  "buildCommand": "npm run build",
+  "installCommand": "npm install",
+  "framework": "static",
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        }
+      ]
+    }
+  ],
+  "crons": [
+    {
+      "path": "/api/cleanup",
+      "schedule": "0 0 * * *"
+    },
+    {
+      "path": "/api/backup",
+      "schedule": "0 3 * * *"
+    },
+    {
+      "path": "/api/notify",
+      "schedule": "0 9 * * *"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production",
+    "VERCEL_ENV": "production"
+  },
   "routes": [
     {
       "src": "/api/submit",

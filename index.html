@@ -193,13 +193,12 @@
         const formData = new FormData(form);
         
         try {
-          const response = await fetch('/api/submit', {
+          const response = await fetch('/api/newsletter', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              type: 'newsletter',
               email: formData.get('email')
             })
           });
@@ -208,7 +207,8 @@
             alert('Thank you for subscribing to our newsletter!');
             form.reset();
           } else {
-            alert('There was an error submitting the form. Please try again.');
+            const data = await response.json();
+            alert(data.error || 'There was an error submitting the form. Please try again.');
           }
         } catch (error) {
           alert('There was an error submitting the form. Please try again.');
@@ -221,13 +221,12 @@
         const formData = new FormData(form);
         
         try {
-          const response = await fetch('/api/submit', {
+          const response = await fetch('/api/portal', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              type: 'portal',
               roomNumber: formData.get('roomnumber'),
               password: formData.get('password')
             })
@@ -237,7 +236,8 @@
             alert('Portal access request submitted successfully!');
             form.reset();
           } else {
-            alert('There was an error submitting the form. Please try again.');
+            const data = await response.json();
+            alert(data.error || 'There was an error submitting the form. Please try again.');
           }
         } catch (error) {
           alert('There was an error submitting the form. Please try again.');
