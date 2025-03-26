@@ -182,31 +182,15 @@
         <input type="submit">
         </form>
 
-      <h3>View Subscribers and Portal Requests</h3>
-      <button onclick="toggleSubmissions()">View All Submissions</button>
-      <div id="submissionsDisplay" style="display: none;"></div>
-    
+      <h3>Important resources</h3>
+      We will keep updating this section whenever new policies will be implement or something changes.<br>
+      <a href = "https://classic.austlii.edu.au/au/legis/nsw/consol_act/ssma2015242/"
+        target = "_blank">
+        Strata schemes management (2015)
+        <br>
+      </a>
+    </section>
     <script>
-      let submissionsInterval;
-
-      function toggleSubmissions() {
-        const display = document.getElementById('submissionsDisplay');
-        const button = document.querySelector('button');
-        
-        if (display.style.display === 'none') {
-          display.style.display = 'block';
-          button.textContent = 'Hide Submissions';
-          // Start real-time updates
-          fetchData(); // Initial fetch
-          submissionsInterval = setInterval(fetchData, 5000); // Update every 5 seconds
-        } else {
-          display.style.display = 'none';
-          button.textContent = 'View All Submissions';
-          // Stop real-time updates
-          clearInterval(submissionsInterval);
-        }
-      }
-
       async function handleNewsletterSubmit(event) {
         event.preventDefault();
         const form = event.target;
@@ -261,39 +245,6 @@
           }
         } catch (error) {
           alert('There was an error submitting the form. Please try again.');
-        }
-      }
-
-      async function fetchData() {
-        try {
-          const response = await fetch('/api/submit');
-          const data = await response.json();
-          
-          let displayHTML = '<h4>Newsletter Subscribers:</h4>';
-          if (data.subscribers && data.subscribers.length > 0) {
-            displayHTML += '<ul>';
-            data.subscribers.forEach(sub => {
-              displayHTML += `<li>${sub.email} (subscribed: ${new Date(sub.subscribedAt).toLocaleString()})</li>`;
-            });
-            displayHTML += '</ul>';
-          } else {
-            displayHTML += '<p>No subscribers yet</p>';
-          }
-
-          displayHTML += '<h4>Portal Access Requests:</h4>';
-          if (data.portalRequests && data.portalRequests.length > 0) {
-            displayHTML += '<ul>';
-            data.portalRequests.forEach(req => {
-              displayHTML += `<li>Room ${req.roomNumber} (requested: ${new Date(req.requestedAt).toLocaleString()})</li>`;
-            });
-            displayHTML += '</ul>';
-          } else {
-            displayHTML += '<p>No portal requests yet</p>';
-          }
-
-          document.getElementById('submissionsDisplay').innerHTML = displayHTML;
-        } catch (error) {
-          document.getElementById('submissionsDisplay').innerHTML = '<p>Error fetching data</p>';
         }
       }
     </script>
