@@ -1,8 +1,6 @@
 {
   "version": 2,
   "regions": ["syd1"],
-  "buildCommand": "npm run build",
-  "installCommand": "npm install",
   "framework": "astro",
   "cleanUrls": true,
   "trailingSlash": false,
