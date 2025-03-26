@@ -1,7 +1,6 @@
 {
   "version": 2,
   "regions": ["syd1"],
-  "output": "static",
   "cleanUrls": true,
   "trailingSlash": false,
   "headers": [
