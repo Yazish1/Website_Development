@@ -24,16 +24,8 @@
   ],
   "crons": [
     {
-      "path": "/api/cleanup",
-      "schedule": "0 0 * * *"
-    },
-    {
       "path": "/api/backup",
       "schedule": "0 3 * * *"
-    },
-    {
-      "path": "/api/notify",
-      "schedule": "0 9 * * *"
     }
   ],
   "env": {
