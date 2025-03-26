@@ -3,7 +3,7 @@
   "regions": ["syd1"],
   "buildCommand": "npm run build",
   "installCommand": "npm install",
-  "framework": "static",
+  "framework": "astro",
   "cleanUrls": true,
   "trailingSlash": false,
   "headers": [
