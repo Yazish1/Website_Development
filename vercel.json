@@ -1,7 +1,7 @@
 {
   "version": 2,
   "regions": ["syd1"],
-  "framework": "astro",
+  "output": "static",
   "cleanUrls": true,
   "trailingSlash": false,
   "headers": [
