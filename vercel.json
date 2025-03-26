@@ -42,13 +42,6 @@
   "env": {
     "NODE_ENV": "production",
     "VERCEL_ENV": "production"
-  },
-  "routes": [
-    {
-      "src": "/api/submit",
-      "methods": ["POST"],
-      "dest": "/api/submit.js"
-    }
-  ]
+  }
 }
 
