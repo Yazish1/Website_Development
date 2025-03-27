@@ -3,7 +3,7 @@ export const config = {
 };
 
 export default async function handler(req) {
-  if (req.method !== 'POST') {
+  if (req.method !== 'GET') {
     return new Response(JSON.stringify({ error: 'Method not allowed' }), {
       status: 405,
       headers: { 'Content-Type': 'application/json' }
@@ -11,7 +11,16 @@ export default async function handler(req) {
   }
 
   try {
-    const { email } = await req.json();
+    // Get email from URL parameters
+    const url = new URL(req.url);
+    const email = url.searchParams.get('email');
+    
+    if (!email) {
+      return new Response(JSON.stringify({ error: 'Email parameter is required' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
     
     // Here you would typically:
     // 1. Validate the email
