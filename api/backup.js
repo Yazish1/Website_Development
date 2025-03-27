@@ -1,7 +1,14 @@
-export default async function handler(req, res) {
+export const config = {
+  runtime: 'edge',
+};
+
+export default async function handler(req) {
   // Only allow POST requests from Vercel Cron
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+    return new Response(JSON.stringify({ error: 'Method not allowed' }), {
+      status: 405,
+      headers: { 'Content-Type': 'application/json' }
+    });
   }
 
   try {
@@ -10,11 +17,17 @@ export default async function handler(req, res) {
     // 2. Backup file storage
     // 3. Archive logs
     
-    return res.status(200).json({
+    return new Response(JSON.stringify({
       message: 'Backup completed successfully',
       timestamp: new Date().toISOString()
+    }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' }
     });
   } catch (error) {
-    return res.status(500).json({ error: 'Error during backup' });
+    return new Response(JSON.stringify({ error: 'Error during backup' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' }
+    });
   }
 } 

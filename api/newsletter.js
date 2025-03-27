@@ -1,32 +1,34 @@
-export default async function handler(req, res) {
-  // Enable CORS
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
-  );
+export const config = {
+  runtime: 'edge',
+};
 
-  if (req.method === 'POST') {
-    try {
-      const { email } = req.body;
-
-      // Validate email
-      if (!email || !email.includes('@')) {
-        return res.status(400).json({ error: 'Invalid email address' });
-      }
-
-      // Here you would typically save to your database
-      // For now, we'll just return success
-      return res.status(200).json({
-        message: 'Successfully subscribed to newsletter',
-        email: email
-      });
-    } catch (error) {
-      return res.status(500).json({ error: 'Error processing subscription' });
-    }
+export default async function handler(req) {
+  if (req.method !== 'POST') {
+    return new Response(JSON.stringify({ error: 'Method not allowed' }), {
+      status: 405,
+      headers: { 'Content-Type': 'application/json' }
+    });
   }
 
-  return res.status(405).json({ error: 'Method not allowed' });
+  try {
+    const { email } = await req.json();
+    
+    // Here you would typically:
+    // 1. Validate the email
+    // 2. Store the email in your database
+    // 3. Send a confirmation email
+    
+    return new Response(JSON.stringify({
+      message: 'Newsletter subscription successful',
+      email: email
+    }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' }
+    });
+  } catch (error) {
+    return new Response(JSON.stringify({ error: 'Error processing subscription' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
 } 
