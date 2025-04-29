@@ -2,30 +2,15 @@
   "version": 2,
   "builds": [
     {
-      "src": "api/*.php",
-      "use": "vercel-php@0.7.3"
-    },
-    {
-      "src": "api/lost-stolen/index.js",
-      "use": "@vercel/node"
+      "src": "*.html",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
     {
-      "src": "/api/lost-stolen",
-      "dest": "/api/lost-stolen"
-    },
-    {
-      "src": "/api/(.*\\.php)",
-      "dest": "/api/$1"
-    },
-    {
       "src": "/(.*)",
       "dest": "/$1"
     }
-  ],
-  "env": {
-    "PHP_EXTENSIONS": "pdo,pdo_pgsql"
-  }
+  ]
 }
 
