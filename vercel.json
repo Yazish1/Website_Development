@@ -10,6 +10,10 @@
   },
   "routes": [
     {
+      "src": "/api/process_lost_stolen.php",
+      "dest": "/api/process_lost_stolen.php"
+    },
+    {
       "src": "/api/(.*)",
       "dest": "/api/$1"
     },

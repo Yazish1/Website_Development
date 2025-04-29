@@ -265,7 +265,7 @@
         const formData = new FormData(form);
         
         try {
-          const response = await fetch('/api/process_forms.php', {
+          const response = await fetch('/api/process_lost_stolen.php', {
             method: 'POST',
             body: formData
           });
