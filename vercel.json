@@ -32,15 +32,20 @@
     "NODE_ENV": "production",
     "VERCEL_ENV": "production"
   },
-  "functions": {
-    "api/*.php": {
-      "runtime": "@vercel/php@1.0.0"
-    }
-  },
-  "rewrites": [
+  "builds": [
     {
-      "source": "/api/:path*",
-      "destination": "/api/:path*"
+      "src": "api/*.php",
+      "use": "vercel-php"
+    },
+    {
+      "src": "*.html",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
     }
   ]
 }
