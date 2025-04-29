@@ -182,6 +182,28 @@
         <input type="submit">
         </form>
 
+      <h3>Report Lost or Stolen Items</h3>
+      If you've lost an item or had something stolen within the building, please report it using the form below.
+      Our security team will assist in locating your items.<br>
+      <form id="lostStolenForm" onsubmit="handleLostStolenSubmit(event)">
+        <label for="ls_roomnumber">Room number:</label>
+        <input type="text" id="ls_roomnumber" name="roomnumber" placeholder="000" required><br>
+        <label for="description">Item description:</label>
+        <textarea id="description" name="description" rows="4" placeholder="Describe the item in detail" required></textarea><br>
+        <label for="time_incident">When did you lose it or when was it stolen?</label>
+        <input type="datetime-local" id="time_incident" name="time_incident" required><br>
+        <label for="location">Where did you last see it or where was it stolen from?</label>
+        <input type="text" id="location" name="location" placeholder="e.g., Lobby, Pool area, Room 123" required><br>
+        <label for="status">Status:</label>
+        <select id="status" name="status" required>
+          <option value="lost">Lost</option>
+          <option value="stolen">Stolen</option>
+        </select><br>
+        <input type="hidden" name="lost_stolen_form" value="1">
+        <input type="reset"><br>
+        <input type="submit">
+      </form>
+
       <h3>Important resources</h3>
       We will keep updating this section whenever new policies will be implement or something changes.<br>
       <a href = "https://classic.austlii.edu.au/au/legis/nsw/consol_act/ssma2015242/"
@@ -240,6 +262,29 @@
           } else {
             const data = await response.json();
             alert(data.error || 'There was an error submitting the form. Please try again.');
+          }
+        } catch (error) {
+          alert('There was an error submitting the form. Please try again.');
+        }
+      }
+
+      async function handleLostStolenSubmit(event) {
+        event.preventDefault();
+        const form = event.target;
+        const formData = new FormData(form);
+        
+        try {
+          const response = await fetch('/api/process_forms.php', {
+            method: 'POST',
+            body: formData
+          });
+          
+          if (response.ok) {
+            const result = await response.text();
+            alert(result);
+            form.reset();
+          } else {
+            alert('There was an error submitting the form. Please try again.');
           }
         } catch (error) {
           alert('There was an error submitting the form. Please try again.');

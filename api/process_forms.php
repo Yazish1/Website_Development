@@ -38,5 +38,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['roomnumber']) && isset
     $stmt->close();
 }
 
+// Handle Lost or Stolen Items Form
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['lost_stolen_form'])) {
+    $roomnumber = filter_var($_POST['roomnumber'], FILTER_SANITIZE_STRING);
+    $description = filter_var($_POST['description'], FILTER_SANITIZE_STRING);
+    $time_incident = filter_var($_POST['time_incident'], FILTER_SANITIZE_STRING);
+    $location = filter_var($_POST['location'], FILTER_SANITIZE_STRING);
+    $status = filter_var($_POST['status'], FILTER_SANITIZE_STRING);
+    
+    // Validate status
+    if ($status !== 'lost' && $status !== 'stolen') {
+        echo "Invalid status. Must be either 'lost' or 'stolen'.";
+        exit;
+    }
+    
+    $sql = "INSERT INTO lost_stolen_items (room_number, item_description, time_incident, location, status) VALUES (?, ?, ?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("sssss", $roomnumber, $description, $time_incident, $location, $status);
+    
+    if ($stmt->execute()) {
+        echo "Lost or stolen item report submitted successfully!";
+    } else {
+        echo "Error: " . $stmt->error;
+    }
+    $stmt->close();
+}
+
 $conn->close();
 ?> 
