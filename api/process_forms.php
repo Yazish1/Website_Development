@@ -35,8 +35,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['email'])) {
 
 // Handle Portal Access Form
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['roomnumber']) && isset($_POST['password'])) {
-    $roomnumber = filter_var($_POST['roomnumber'], FILTER_SANITIZE_STRING);
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT); // Hash the password for security
+    $roomnumber = htmlspecialchars($_POST['roomnumber'], ENT_QUOTES, 'UTF-8');
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
     
     $sql = "INSERT INTO portal_access (room_number, password_hash, created_at) VALUES (?, ?, NOW())";
     $stmt = $conn->prepare($sql);
@@ -51,14 +51,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['roomnumber']) && isset
 }
 
 // Handle Lost or Stolen Items Form
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['lost_stolen_form'])) {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['roomnumber']) && isset($_POST['description'])) {
     error_log("Processing lost/stolen form submission");
     
-    $roomnumber = filter_var($_POST['roomnumber'], FILTER_SANITIZE_STRING);
-    $description = filter_var($_POST['description'], FILTER_SANITIZE_STRING);
-    $time_incident = filter_var($_POST['time_incident'], FILTER_SANITIZE_STRING);
-    $location = filter_var($_POST['location'], FILTER_SANITIZE_STRING);
-    $status = filter_var($_POST['status'], FILTER_SANITIZE_STRING);
+    // Sanitize inputs using htmlspecialchars instead of deprecated FILTER_SANITIZE_STRING
+    $roomnumber = htmlspecialchars($_POST['roomnumber'], ENT_QUOTES, 'UTF-8');
+    $description = htmlspecialchars($_POST['description'], ENT_QUOTES, 'UTF-8');
+    $time_incident = htmlspecialchars($_POST['time_incident'], ENT_QUOTES, 'UTF-8');
+    $location = htmlspecialchars($_POST['location'], ENT_QUOTES, 'UTF-8');
+    $status = htmlspecialchars($_POST['status'], ENT_QUOTES, 'UTF-8');
     
     error_log("Form data: Room: $roomnumber, Description: $description, Time: $time_incident, Location: $location, Status: $status");
     
@@ -69,10 +70,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['lost_stolen_form'])) {
         exit;
     }
     
-    $sql = "INSERT INTO lost_stolen_items (room_number, item_description, time_incident, location, status) VALUES (?, ?, ?, ?, ?)";
-    $stmt = $conn->prepare($sql);
-    
     try {
+        // First verify the database connection
+        $conn->query("SELECT 1");
+        
+        $sql = "INSERT INTO lost_stolen_items (room_number, item_description, time_incident, location, status) VALUES (?, ?, ?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        
         $stmt->execute([$roomnumber, $description, $time_incident, $location, $status]);
         error_log("Lost/stolen item report submitted successfully");
         echo "Lost or stolen item report submitted successfully!";
@@ -81,6 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['lost_stolen_form'])) {
         echo "Error: " . $e->getMessage();
     }
 } else {
-    error_log("No lost_stolen_form parameter found in POST data");
+    error_log("Missing required fields in POST data");
+    echo "Error: Missing required fields";
 }
 ?> 
