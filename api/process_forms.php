@@ -8,14 +8,13 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['email'])) {
     if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $sql = "INSERT INTO newsletter_subscribers (email, subscription_date) VALUES (?, NOW())";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("s", $email);
         
-        if ($stmt->execute()) {
+        try {
+            $stmt->execute([$email]);
             echo "Thank you for subscribing to our newsletter!";
-        } else {
-            echo "Error: " . $stmt->error;
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
         }
-        $stmt->close();
     } else {
         echo "Invalid email format";
     }
@@ -28,14 +27,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['roomnumber']) && isset
     
     $sql = "INSERT INTO portal_access (room_number, password_hash, created_at) VALUES (?, ?, NOW())";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ss", $roomnumber, $password);
     
-    if ($stmt->execute()) {
+    try {
+        $stmt->execute([$roomnumber, $password]);
         echo "Portal access created successfully!";
-    } else {
-        echo "Error: " . $stmt->error;
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
     }
-    $stmt->close();
 }
 
 // Handle Lost or Stolen Items Form
@@ -54,15 +52,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['lost_stolen_form'])) {
     
     $sql = "INSERT INTO lost_stolen_items (room_number, item_description, time_incident, location, status) VALUES (?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sssss", $roomnumber, $description, $time_incident, $location, $status);
     
-    if ($stmt->execute()) {
+    try {
+        $stmt->execute([$roomnumber, $description, $time_incident, $location, $status]);
         echo "Lost or stolen item report submitted successfully!";
-    } else {
-        echo "Error: " . $stmt->error;
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
     }
-    $stmt->close();
 }
-
-$conn->close();
 ?> 
