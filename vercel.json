@@ -3,7 +3,7 @@
   "functions": {
     "api/*.php": {
       "runtime": "vercel-php@0.7.3",
-      "includeFiles": ["api/**"],
+      "includeFiles": "api/**",
       "memory": 1024,
       "maxDuration": 10
     }
