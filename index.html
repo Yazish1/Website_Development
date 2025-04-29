@@ -271,7 +271,8 @@
         });
         
         try {
-          const response = await fetch('/api/lost-stolen/', {
+          console.log('Submitting form data:', data);
+          const response = await fetch('/api/lost-stolen', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
@@ -280,6 +281,7 @@
           });
           
           const result = await response.json();
+          console.log('Server response:', result);
           
           if (response.ok) {
             alert(result.message);

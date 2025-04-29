@@ -6,14 +6,14 @@
       "use": "vercel-php@0.7.3"
     },
     {
-      "src": "api/lost-stolen.js",
+      "src": "api/lost-stolen/index.js",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
-      "src": "/api/lost-stolen(.*)",
-      "dest": "/api/lost-stolen.js"
+      "src": "/api/lost-stolen",
+      "dest": "/api/lost-stolen"
     },
     {
       "src": "/api/(.*\\.php)",
