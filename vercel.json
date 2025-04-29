@@ -1,28 +1,22 @@
 {
   "version": 2,
-  "functions": {
-    "api/*.php": {
-      "runtime": "vercel-php@0.7.3",
-      "includeFiles": "api/**",
-      "memory": 1024,
-      "maxDuration": 10
+  "builds": [
+    {
+      "src": "api/*.php",
+      "use": "vercel-php@0.7.3"
+    },
+    {
+      "src": "api/lost-stolen.js",
+      "use": "@vercel/node"
     }
-  },
+  ],
   "routes": [
     {
-      "src": "/api/test_db.php",
-      "dest": "/api/test_db.php"
+      "src": "/api/lost-stolen",
+      "dest": "/api/lost-stolen.js"
     },
     {
-      "src": "/api/test_php.php",
-      "dest": "/api/test_php.php"
-    },
-    {
-      "src": "/api/process_lost_stolen.php",
-      "dest": "/api/process_lost_stolen.php"
-    },
-    {
-      "src": "/api/(.*)",
+      "src": "/api/(.*\\.php)",
       "dest": "/api/$1"
     },
     {

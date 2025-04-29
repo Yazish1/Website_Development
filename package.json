@@ -4,6 +4,7 @@
   "description": "Harbourview Apartments Website",
   "private": true,
   "dependencies": {
-    "vercel-php": "^0.7.3"
+    "vercel-php": "^0.7.3",
+    "pg": "^8.11.3"
   }
 }
