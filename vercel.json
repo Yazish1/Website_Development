@@ -12,7 +12,7 @@
   ],
   "routes": [
     {
-      "src": "/api/lost-stolen",
+      "src": "/api/lost-stolen(.*)",
       "dest": "/api/lost-stolen.js"
     },
     {

@@ -271,7 +271,7 @@
         });
         
         try {
-          const response = await fetch('/api/lost-stolen', {
+          const response = await fetch('/api/lost-stolen/', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
@@ -288,6 +288,7 @@
             alert(result.error || 'There was an error submitting the form. Please try again.');
           }
         } catch (error) {
+          console.error('Form submission error:', error);
           alert('There was an error submitting the form. Please try again.');
         }
       }
