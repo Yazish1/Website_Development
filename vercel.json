@@ -26,6 +26,7 @@
   ],
   "env": {
     "PHP_EXTENSIONS": "pdo,pdo_pgsql"
-  }
+  },
+  "comment": "Updated configuration for mixed PHP and Node.js deployment"
 }
 
