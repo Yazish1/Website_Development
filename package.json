@@ -1,7 +1,9 @@
 {
+  "name": "harbourview-apartments",
+  "version": "1.0.0",
+  "description": "Harbourview Apartments Website",
   "private": true,
   "dependencies": {
-    "@vercel/edge": "^0.1.2",
-    "vercel-php": "^0.6.0"
+    "vercel-php": "^0.7.3"
   }
 }
