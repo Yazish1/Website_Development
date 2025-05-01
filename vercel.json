@@ -4,10 +4,6 @@
     {
       "src": "*.html",
       "use": "@vercel/static"
-    },
-    {
-      "src": "*.php",
-      "use": "@vercel/php"
     }
   ],
   "routes": [
