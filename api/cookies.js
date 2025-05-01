@@ -1,58 +1,46 @@
-// Set a cookie with SameSite and Secure for HTTPS
+// --- Your cookie helper functions ---
+
 function setCookie(name, value, days) {
-    const d = new Date();
-    d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
-    const expires = "expires=" + d.toUTCString();
-    const secure = location.protocol === "https:" ? ";Secure" : "";
-    document.cookie = `${name}=${value};${expires};path=/;SameSite=Lax${secure}`;
+    const expires = new Date(Date.now() + days * 864e5).toUTCString();
+    document.cookie = name + "=" + encodeURIComponent(value) + "; expires=" + expires + "; path=/";
   }
   
-  // Get a cookie by name
   function getCookie(name) {
-    const decodedCookie = decodeURIComponent(document.cookie);
-    const cookies = decodedCookie.split(';');
-    name = name + "=";
-    for (let c of cookies) {
-      c = c.trim();
-      if (c.indexOf(name) === 0) return c.substring(name.length);
-    }
-    return "";
+    return document.cookie.split("; ").reduce((r, v) => {
+      const parts = v.split("=");
+      return parts[0] === name ? decodeURIComponent(parts[1]) : r;
+    }, "");
   }
   
-  // Show greeting on the page
+  function deleteCookie(name) {
+    setCookie(name, "", -1);
+  }
+  
   function showGreeting(name) {
-    const greetingDiv = document.getElementById("greeting");
-    if (greetingDiv) {
-      greetingDiv.textContent = `Welcome back, ${name}!`;
-    }
+    document.getElementById("greeting").innerText = `Hello, ${name}!`;
   }
   
-  // Save name to cookie and update greeting
   function setName() {
-    const nameInput = document.getElementById("nameInput");
-    if (nameInput) {
-      const name = nameInput.value.trim();
-      if (name) {
-        setCookie("username", name, 7);
-        showGreeting(name);
-      }
+    const name = document.getElementById("nameInput")?.value;
+    if (name) {
+      setCookie("username", name, 7);
+      showGreeting(name);
     }
   }
   
-  // Clear the saved cookie and greeting
   function clearName() {
-    setCookie("username", "", -1); // Expire immediately
-    const greetingDiv = document.getElementById("greeting");
-    if (greetingDiv) {
-      greetingDiv.textContent = "";
-    }
+    deleteCookie("username");
+    document.getElementById("greeting").innerText = "";
   }
   
-  // On page load, greet user if cookie exists
+  // --- ✅ THIS PART GOES AT THE END ---
   window.onload = function () {
     const savedName = getCookie("username");
     if (savedName) {
       showGreeting(savedName);
     }
+  
+    document.getElementById("saveBtn")?.addEventListener("click", setName);
+    document.getElementById("resetBtn")?.addEventListener("click", clearName);
   };
   
