@@ -1,11 +1,5 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "*.html",
-      "use": "@vercel/static"
-    }
-  ],
   "routes": [
     {
       "src": "/(.*)",
@@ -13,8 +7,8 @@
     }
   ],
     "functions": {
-      "api/*.php": {
-        "runtime": "vercel-php@0.7.3"
+    "api/*.php": {
+      "runtime": "vercel-php@0.7.3"
       }
     }
 }
