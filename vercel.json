@@ -1,9 +1,9 @@
 {
   "version": 2,
-  "rewrites": [
+  "routes": [
     {
-      "source": "/report",
-      "destination": "/api/report.php"
+      "src": "^/report/?$",
+      "dest": "/api/report.php"
     }
   ],
   "functions": {
