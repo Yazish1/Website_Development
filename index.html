@@ -148,153 +148,58 @@
         Building security: 0212223200<br>
       </p>
       
-      <h3>Weekly newsletter</h3>
-      Sign up for the weekly newsletter to stay upto date with events happening at the residence.
-      All you need is your email!
-      <br>
-      <form id="newsletterForm" onsubmit="handleNewsletterSubmit(event)">
+      <h1>Welcome to Your Residence Portal</h1>
+
+      <!-- Cookie Greeting Demo -->
+      <h3>Cookie Greeting Demo</h3>
+      <div id="form-section">
+        <input type="text" id="nameInput" placeholder="Enter your name" />
+        <button id="saveBtn">Save Name</button>
+        <button id="resetBtn">Reset Name</button>
+        <div class="greeting" id="greeting"></div>
+      </div>
+    
+      <!-- Newsletter Signup -->
+      <h3>Weekly Newsletter</h3>
+      <p>Sign up for the weekly newsletter to stay up to date with events happening at the residence. All you need is your email!</p>
+      <form id="newsletterForm">
         <label for="email">Email:</label>
-        <input type="email" id="email" name="email" placeholder="xyz@gmail.com" required><br>
-        <input type="reset"><br>
-        <input type="submit">
+        <input type="email" id="email" name="email" placeholder="xyz@gmail.com" required>
+        <button type="submit">Subscribe</button>
       </form>
-
-      <h3>Report Lost or Stolen Items</h3>
-      <p>If you've lost an item or had something stolen within the building, please use our dedicated reporting system:</p>
-      <a href="/report.php" class="button">Report Lost/Stolen Item</a>
-      <br><br>
-        
-      <h3>Get immediate access to your portal</h3>
-        Put your room number and password (at the back of your access card) in order to get access to your portal.
-        The portal will help you register for building events and pay your rent.<br>
-        <form id="portalForm" onsubmit="handlePortalSubmit(event)">
-        <label for="roomnumber">Room number:</label>
-        <input type="text" id="roomnumber" name="roomnumber" placeholder="000" required><br>
+    
+      <!-- Portal Access -->
+      <h3>Get Immediate Access to Your Portal</h3>
+      <p>Put your room number and password (on your access card) to log in and manage events or pay rent.</p>
+      <form id="portalForm">
+        <label for="roomnumber">Room Number:</label>
+        <input type="text" id="roomnumber" name="roomnumber" placeholder="000" required>
         <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required><br>
-        <input type="reset"><br>
-        <input type="submit">
-        </form>
-
+        <input type="password" id="password" name="password" required>
+        <button type="submit">Access Portal</button>
+      </form>
+    
+      <!-- Building Feedback -->
+      <h3>Building Feedback</h3>
+      <p>Have suggestions for our residence? Let us know below:</p>
+      <form id="feedbackForm">
+        <label for="fb_name">Your Name (optional):</label>
+        <input type="text" id="fb_name" name="name">
+        <label for="fb_message">Message:</label>
+        <textarea id="fb_message" name="message" rows="3" required></textarea>
+        <button type="submit">Send Feedback</button>
+      </form>
+    
+      <!-- Lost/Stolen Link (PHP page) -->
       <h3>Report Lost or Stolen Items</h3>
-      If you've lost an item or had something stolen within the building, please report it using the form below.
-      Our security team will assist in locating your items.<br>
-      <a href="/report" target="_blank">Report Lost or Stolen Items →</a>
-      
-      <section id = "Importantresources">
-      <h3>Important resources</h3>
-      We will keep updating this section whenever new policies will be implement or something changes.<br>
-      <a href = "https://classic.austlii.edu.au/au/legis/nsw/consol_act/ssma2015242/"
-        target = "_blank">
-        Strata schemes management (2015)
-        <br>
-      </a>
-    </section>
-    <script>
-      async function handleNewsletterSubmit(event) {
-        event.preventDefault();
-        const form = event.target;
-        const formData = new FormData(form);
-        const email = formData.get('email');
-        
-        try {
-          const response = await fetch(`/api/newsletter?email=${encodeURIComponent(email)}`, {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-            }
-          });
-          
-          if (response.ok) {
-            alert('Thank you for subscribing to our newsletter!');
-            form.reset();
-          } else {
-            const data = await response.json();
-            alert(data.error || 'There was an error submitting the form. Please try again.');
-          }
-        } catch (error) {
-          alert('There was an error submitting the form. Please try again.');
-        }
-      }
-
-      async function handlePortalSubmit(event) {
-        event.preventDefault();
-        const form = event.target;
-        const formData = new FormData(form);
-        
-        try {
-          const response = await fetch('/api/portal', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              roomNumber: formData.get('roomnumber'),
-              password: formData.get('password')
-            })
-          });
-          
-          if (response.ok) {
-            alert('Portal access request submitted successfully!');
-            form.reset();
-          } else {
-            const data = await response.json();
-            alert(data.error || 'There was an error submitting the form. Please try again.');
-          }
-        } catch (error) {
-          alert('There was an error submitting the form. Please try again.');
-        }
-      }
-
-      async function handleLostStolenSubmit(event) {
-        event.preventDefault();
-        const form = event.target;
-        const formData = new FormData(form);
-        
-        // Convert FormData to JSON
-        const data = {};
-        formData.forEach((value, key) => {
-          data[key] = value;
-        });
-        
-        try {
-          console.log('Submitting form data:', data);
-          const response = await fetch('/api/lost-stolen', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-          });
-          
-          const result = await response.json();
-          console.log('Server response:', result);
-          
-          if (response.ok) {
-            alert(result.message);
-            form.reset();
-          } else {
-            alert(result.error || 'There was an error submitting the form. Please try again.');
-          }
-        } catch (error) {
-          console.error('Form submission error:', error);
-          alert('There was an error submitting the form. Please try again.');
-        }
-      }
-    </script>
-
-<h2>Cookie Greeting Demo</h2>
-
-<div id="form-section">
-  <input type="text" id="nameInput" placeholder="Enter your name" />
-  <button id="saveBtn">Save Name</button>
-  <button id="resetBtn">Reset Name</button>
-  <h2 id="greeting"></h2>
-</div>
-
-<div class="greeting" id="greeting"></div>
-
-<script src="/assets/cookies.js"></script>
+      <p>If you've lost an item or had something stolen within the building, please use our dedicated reporting system.</p>
+      <div class="button-link">
+        <a href="/report" class="button" target="_blank">Report Lost/Stolen Item →</a>
+      </div>
+    
+      <!-- Scripts -->
+      <script src="/assets/cookies.js" defer></script>
+      <script src="/js/main.js" defer></script>
 
   </body>
 </html>

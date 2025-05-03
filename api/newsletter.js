@@ -1,43 +1,21 @@
-export const config = {
-  runtime: 'edge',
-};
+import { Pool } from 'pg';
 
-export default async function handler(req) {
-  if (req.method !== 'GET') {
-    return new Response(JSON.stringify({ error: 'Method not allowed' }), {
-      status: 405,
-      headers: { 'Content-Type': 'application/json' }
-    });
-  }
+const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+
+export default async function handler(req, res) {
+  const { email } = req.query;
+  if (!email) return res.status(400).json({ error: 'Email required' });
 
   try {
-    // Get email from URL parameters
-    const url = new URL(req.url);
-    const email = url.searchParams.get('email');
-    
-    if (!email) {
-      return new Response(JSON.stringify({ error: 'Email parameter is required' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' }
-      });
-    }
-    
-    // Here you would typically:
-    // 1. Validate the email
-    // 2. Store the email in your database
-    // 3. Send a confirmation email
-    
-    return new Response(JSON.stringify({
-      message: 'Newsletter subscription successful',
-      email: email
-    }), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' }
-    });
-  } catch (error) {
-    return new Response(JSON.stringify({ error: 'Error processing subscription' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' }
-    });
+    await pool.query(
+      `INSERT INTO newsletter_subscribers (email) VALUES ($1)
+       ON CONFLICT (email) DO NOTHING`,
+      [email]
+    );
+    res.status(200).json({ message: 'Subscribed!' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Database error' });
   }
-} 
+}
+ 
