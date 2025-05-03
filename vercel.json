@@ -1,11 +1,15 @@
 {
   "version": 2,
-  "routes": [
-    { "src": "/report", "dest": "/api/report.php" },
-    { "src": "/(.*)",   "dest": "/$1"          }
+  "rewrites": [
+    {
+      "source": "/report",
+      "destination": "/api/report.php"
+    }
   ],
   "functions": {
-    "api/*.php": { "runtime": "vercel-php@0.7.3" }
+    "api/*.php": {
+      "runtime": "vercel-php@0.7.3"
+    }
   }
 }
 
