@@ -1,17 +1,10 @@
 {
   "version": 2,
-  "routes": [
+  "redirects": [
     {
-      "src": "^/report/?$",
-      "dest": "/api/report.php"
-    },
-
-    {
-      "handle": "filesystem"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
+      "source": "/report",
+      "destination": "/api/report.php",
+      "statusCode": 302
     }
   ],
   "functions": {
@@ -20,5 +13,6 @@
     }
   }
 }
+
 
 
