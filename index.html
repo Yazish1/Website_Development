@@ -211,46 +211,28 @@
               body: JSON.stringify(payload),
             });
 
-            const data = await response.json();
+            let message = '';
+            if (response.headers.get('content-type')?.includes('application/json')) {
+              const data = await response.json();
+              message = data.message || data.error || 'Unknown response';
+            } else {
+              message = await response.text();
+            }
 
             if (response.ok) {
               status.textContent = '✅ Submission successful!';
               status.className = 'success-message';
             } else {
-              status.textContent = `❌ Error: ${data.error || 'Something went wrong'}`;
+              status.textContent = `❌ Error: ${message}`;
               status.className = 'error-message';
             }
+
           } catch (error) {
             status.textContent = `❌ Error: ${error.message}`;
             status.className = 'error-message';
           }
         }
 
-        // Newsletter
-        document.getElementById('newsletterForm').addEventListener('submit', function (event) {
-          event.preventDefault();
-          handleSubmit('newsletterForm', '/api/newsletter', 'newsletterStatus', () => ({
-            email: document.getElementById('email').value,
-          }));
-        });
-
-        // Portal Access
-        document.getElementById('portalForm').addEventListener('submit', function (event) {
-          event.preventDefault();
-          handleSubmit('portalForm', '/api/portal', 'portalStatus', () => ({
-            roomnumber: document.getElementById('roomnumber').value,
-            password: document.getElementById('password').value,
-          }));
-        });
-
-        // Feedback
-        document.getElementById('feedbackForm').addEventListener('submit', function (event) {
-          event.preventDefault();
-          handleSubmit('feedbackForm', '/api/feedback', 'feedbackStatus', () => ({
-            name: document.getElementById('name').value,
-            message: document.getElementById('message').value,
-          }));
-        });
       </script>
       <!-- Scripts -->
       <script src="/assets/cookies.js" defer></script>
