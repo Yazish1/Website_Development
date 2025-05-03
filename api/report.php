@@ -1,4 +1,8 @@
 <?php
+header("Content-Type: text/html; charset=UTF-8");
+
+// …the rest of your report.php code…
+
 // api/report.php
 
 // Initialize variables
