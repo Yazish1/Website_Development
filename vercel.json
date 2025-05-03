@@ -4,6 +4,14 @@
     {
       "src": "^/report/?$",
       "dest": "/api/report.php"
+    },
+
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
     }
   ],
   "functions": {
@@ -12,6 +20,5 @@
     }
   }
 }
-
 
 
