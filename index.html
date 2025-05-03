@@ -160,95 +160,98 @@
       </div>
     
       <!-- Newsletter Signup -->
-    <h3>Weekly Newsletter</h3>
-    <p>Sign up to stay updated with residence events.</p>
-    <form id="newsletterForm">
-      <label for="email">Email:</label>
-      <input type="email" id="email" name="email" required><br>
-      <input type="submit" value="Subscribe">
-    </form>
+      <h3>Weekly Newsletter</h3>
+      <p>Sign up to stay updated with residence events.</p>
+      <form id="newsletterForm">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br>
+        <input type="submit" value="Subscribe">
+        <div id="newsletterStatus"></div>
+      </form>
 
-    <!-- Portal Access Form -->
-    <h3>Portal Access</h3>
-    <p>Enter your room number and password to access your resident portal.</p>
-    <form id="portalForm">
-      <label for="roomnumber">Room Number:</label>
-      <input type="text" id="roomnumber" name="roomnumber" required><br>
-      <label for="password">Password:</label>
-      <input type="password" id="password" name="password" required><br>
-      <input type="submit" value="Access Portal">
-    </form>
+      <!-- Portal Access Form -->
+      <h3>Portal Access</h3>
+      <p>Enter your room number and password to access your resident portal.</p>
+      <form id="portalForm">
+        <label for="roomnumber">Room Number:</label>
+        <input type="text" id="roomnumber" name="roomnumber" required><br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br>
+        <input type="submit" value="Access Portal">
+        <div id="portalStatus"></div>
+      </form>
 
-    <!-- Building Feedback -->
-    <h3>We value your feedback</h3>
-    <p>Please let us know about your experience or suggestions for improvement.</p>
-    <form id="feedbackForm">
-      <label for="name">Name (optional):</label>
-      <input type="text" id="name" name="name"><br>
+      <!-- Building Feedback -->
+      <h3>We value your feedback</h3>
+      <p>Please let us know about your experience or suggestions for improvement.</p>
+      <form id="feedbackForm">
+        <label for="name">Name (optional):</label>
+        <input type="text" id="name" name="name"><br>
 
-      <label for="message">Feedback:</label><br>
-      <textarea id="message" name="message" rows="4" placeholder="Your message here..." required></textarea><br>
+        <label for="message">Feedback:</label><br>
+        <textarea id="message" name="message" rows="4" placeholder="Your message here..." required></textarea><br>
 
-      <input type="reset">
-      <input type="submit" value="Send Feedback">
-    </form>
+        <input type="reset">
+        <input type="submit" value="Send Feedback">
+        <div id="feedbackStatus"></div>
+      </form>
 
-    <script>
-    // Handling the newsletter form submission
-    document.getElementById('newsletterForm').addEventListener('submit', function(event) {
-      event.preventDefault();
-      const email = document.getElementById('email').value;
-      
-      fetch('/api/newsletter', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email })
-      })
-      .then(response => response.json())
-      .then(data => alert("Success! You've been subscribed to the newsletter."))
-      .catch(error => console.error('Error:', error));
-    });
+      <script>
+        // Helper to post form data
+        async function handleSubmit(formId, endpoint, statusId, payloadBuilder) {
+          const status = document.getElementById(statusId);
+          status.textContent = '';
+          status.className = '';
 
-    // Handling the portal access form submission
-    document.getElementById('portalForm').addEventListener('submit', function(event) {
-      event.preventDefault();
-      const roomnumber = document.getElementById('roomnumber').value;
-      const password = document.getElementById('password').value;
+          try {
+            const payload = payloadBuilder();
+            const response = await fetch(endpoint, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload),
+            });
 
-      fetch('/api/portal', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ roomnumber, password })
-      })
-      .then(response => response.json())
-      .then(data => alert(data.message))  // Display the success message returned by the API
-      .catch(error => console.error('Error:', error));
-    });
+            const data = await response.json();
 
-    // Handling the feedback form submission
-    document.getElementById('feedbackForm').addEventListener('submit', function(event) {
-      event.preventDefault();
-      const name = document.getElementById('name').value;
-      const message = document.getElementById('message').value;
+            if (response.ok) {
+              status.textContent = '✅ Submission successful!';
+              status.className = 'success-message';
+            } else {
+              status.textContent = `❌ Error: ${data.error || 'Something went wrong'}`;
+              status.className = 'error-message';
+            }
+          } catch (error) {
+            status.textContent = `❌ Error: ${error.message}`;
+            status.className = 'error-message';
+          }
+        }
 
-      fetch('/api/feedback', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name, message })
-      })
-      .then(response => response.json())
-      .then(data => alert("Thank you for your feedback!"))
-      .catch(error => console.error('Error:', error));
-    });
-    </script>
+        // Newsletter
+        document.getElementById('newsletterForm').addEventListener('submit', function (event) {
+          event.preventDefault();
+          handleSubmit('newsletterForm', '/api/newsletter', 'newsletterStatus', () => ({
+            email: document.getElementById('email').value,
+          }));
+        });
 
-    
+        // Portal Access
+        document.getElementById('portalForm').addEventListener('submit', function (event) {
+          event.preventDefault();
+          handleSubmit('portalForm', '/api/portal', 'portalStatus', () => ({
+            roomnumber: document.getElementById('roomnumber').value,
+            password: document.getElementById('password').value,
+          }));
+        });
+
+        // Feedback
+        document.getElementById('feedbackForm').addEventListener('submit', function (event) {
+          event.preventDefault();
+          handleSubmit('feedbackForm', '/api/feedback', 'feedbackStatus', () => ({
+            name: document.getElementById('name').value,
+            message: document.getElementById('message').value,
+          }));
+        });
+      </script>
       <!-- Scripts -->
       <script src="/assets/cookies.js" defer></script>
       
