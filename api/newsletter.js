@@ -9,15 +9,19 @@ export default async function handler(req, res) {
     }
 
     try {
-      console.log('Inserting email:', email);
-      await db('newsletter_subscribers').insert({ email });
-      console.log('Insert successful');
+      const subscriptionDate = new Date().toISOString();  // ISO timestamp
+      await db('newsletter_subscribers').insert({
+        email,
+        subscription_date: subscriptionDate,
+      });
+
       return res.status(200).json({ message: 'Email successfully added to newsletter!' });
     } catch (error) {
-      console.error('❌ DB insert failed:', error);  // 👈 this line helps debug
-      return res.status(500).json({ error: 'Failed to add email to the database' });
+      console.error('❌ DB insert failed:', error.message);
+      return res.status(500).json({ error: `DB insert error: ${error.message}` });
     }
   } else {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
 }
+
