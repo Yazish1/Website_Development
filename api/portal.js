@@ -6,7 +6,7 @@ export default async function handler(req, res) {
     
     // Query for room and password validation (just a simple example)
     try {
-      const result = await db('residents').where({ roomnumber, password }).first();
+      const result = await db('portal').where({ room_number, password }).first();
       
       if (result) {
         return res.status(200).json({ message: 'Access granted to the portal.' });
