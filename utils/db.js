@@ -9,6 +9,7 @@ export const db = knex({
     user: process.env.PGUSER,         // From .env (your Neon username)
     password: process.env.PGPASSWORD, // From .env (your Neon password)
     database: process.env.PGDATABASE, // From .env (your Neon database name)
+    port: process.env.PGPORT, 
     ssl: { rejectUnauthorized: false }, // SSL required by Neon
   },
 });
