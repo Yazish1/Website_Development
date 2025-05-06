@@ -254,7 +254,7 @@
         document.getElementById('portalForm').addEventListener('submit', function(event) {
           stopScroll(event);
           handleSubmit(this, '/api/portal', 'portalStatus', () => ({
-            roomnumber: document.getElementById('roomnumber').value,
+            room_number: document.getElementById('roomnumber').value,
             password: document.getElementById('password').value
           }));
         });
