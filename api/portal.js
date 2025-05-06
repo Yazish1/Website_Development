@@ -2,11 +2,11 @@ import { db } from '../utils/db';  // Adjust the path if needed for your Neon co
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
-    const { uuhuhu, password } = req.body;
+    const { room_number, password } = req.body;
     
     // Query for room and password validation (just a simple example)
     try {
-      const result = await db('portal').where({ uuhuhu, password }).first();
+      const result = await db('portal').where({ room_number, password }).first();
       
       if (result) {
         return res.status(200).json({ message: 'Access granted to the portal.' });
