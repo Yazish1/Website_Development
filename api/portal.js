@@ -2,7 +2,7 @@ import { db } from '../utils/db';  // Adjust the path if needed for your Neon co
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
-    const { roomnumber, password } = req.body;
+    const { room_number, password } = req.body;
     
     // Query for room and password validation (just a simple example)
     try {
