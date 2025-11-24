@@ -1,14 +1,12 @@
----
-name: HTML Starter
-slug: html-starter-with-analytics
-description: HTML5 template with analytics and advanced routing configuration.
-deployUrl: https://vercel.com/new/clone?repository-url=https://github.com/vercel/examples/tree/main/solutions/html&project-name=html
-relatedTemplates:
-  - nextjs-boilerplate
----
+Made a website to learn about website development:
+Link to website: https://project3-9kqa3tibi-yazish1s-projects.vercel.app/
+Key Features
+- Cookie‑based session tracking
+- Persistent storage of user requests in a database
+- Basic HTML UI for interaction and display
 
-# HTML Starter
-
-This is a starter HTML5 templates which is configured with Vercel Analytics (through a `script` tag), advanced routing with [Vercel Edge Middleware](https://vercel.com/docs/concepts/functions/edge-middleware), as well as some basic styles
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/vercel/examples/tree/main/solutions/html&project-name=html)
+Tech Stack / Technologies Used
+- Front‑end: HTML
+- Backend (or server): Javascript
+- Database: PostgreSQL + NeonDB
+- Hosting: Vercel
